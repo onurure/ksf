@@ -15,4 +15,11 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('logout', 'HomeController@logout');
+// Route::get('home', 'HomeController@index')->name('home');
+Route::get('admin', 'Admin\FirmsController@index');
+Route::post('admin', 'Admin\FirmsController@save');
+Route::get('admin/delete/{firmid}', 'Admin\FirmsController@delete');
+Route::get('admin/users', 'Admin\UsersController@index');
+Route::post('admin/users', 'Admin\UsersController@save');
+Route::get('admin/delete/{firmid}', 'Admin\FirmsController@delete');

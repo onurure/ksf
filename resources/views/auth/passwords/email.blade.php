@@ -1,47 +1,81 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>NetKeşif - Şifre Hatırlatma</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Google Fonts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+        <script>
+          WebFont.load({
+            google: {"families":["Montserrat:400,500,600,700","Noto+Sans:400,700"]},
+            active: function() {
+                sessionStorage.fonts = true;
+            }
+          });
+        </script>
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url('assets/img/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url('assets/img/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url('assets/img/favicon-16x16.png') }}">
+        <!-- Stylesheet -->
+        <link rel="stylesheet" href="{{ url('assets/vendors/css/base/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url('assets/vendors/css/base/elisyam-1.5.min.css') }}">
+        <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    </head>
+    <body class="bg-fixed-02">
+        <!-- Begin Preloader -->
+        <div id="preloader">
+            <div class="canvas">
+                <img src="{{ url('assets/img/netkesif-logo.jpg') }}" alt="logo" class="loader-logo">
+                <div class="spinner"></div>   
             </div>
         </div>
-    </div>
-</div>
-@endsection
+        <!-- End Preloader -->
+        <!-- Begin Container -->
+        <div class="container-fluid h-100 overflow-y">
+            <div class="row flex-row h-100">
+                <div class="col-12 my-auto">
+                    <div class="password-form mx-auto">
+                        <div class="logo-centered">
+                            <a href="db-default.html">
+                                <img src="{{ url('assets/img/netkesif-logo.jpg') }}" alt="logo">
+                            </a>
+                        </div>
+                        <h3>Şifre hatırlatma</h3>
+                        <form method="POST" action="{{ url('password/email') }}">
+                            <div class="group material-input">
+							    <input type="email" required name="email">
+							    <span class="highlight"></span>
+							    <span class="bar"></span>
+							    <label>Mail Adresi</label>
+                            </div>
+                            <div class="button text-center">
+                                <button class="btn btn-lg btn-gradient-01">
+                                    Şifre Sıfırla
+                                </button>
+                            </div>
+                            {{ csrf_field() }}
+                        </form>
+                        <div class="back">
+                            <a href="{{ url('login')}}">Giriş</a>
+                        </div>
+                    </div>        
+                </div>
+                <!-- End Col -->
+            </div>
+            <!-- End Row -->
+        </div>  
+        <!-- End Container --> 
+        <!-- Begin Vendor Js -->
+        <script src="{{ url('assets/vendors/js/base/jquery.min.js')}}"></script>
+        <script src="{{ url('assets/vendors/js/base/core.min.js')}}"></script>
+        <!-- End Vendor Js -->
+        <!-- Begin Page Vendor Js -->
+        <script src="{{ url('assets/vendors/js/app/app.min.js')}}"></script>
+        <!-- End Page Vendor Js -->
+    </body>
+</html>

@@ -30,7 +30,7 @@
         <!-- Begin Preloader -->
         <div id="preloader">
             <div class="canvas">
-                <img src="{{ url('assets/img/logo.png') }}" alt="logo" class="loader-logo">
+                <img src="{{ url('assets/img/netkesif-logo.jpg') }}" alt="logo" class="loader-logo">
                 <div class="spinner"></div>   
             </div>
         </div>
@@ -44,11 +44,8 @@
                         <div class="elisyam-overlay overlay-01"></div>
                         <div class="authentication-col-content mx-auto">
                             <h1 class="gradient-text-01">
-                                Welcome To Elisyam!
+                                NetKeşif ÖnMuhasebe
                             </h1>
-                            <span class="description">
-                                Etiam consequat urna at magna bibendum, in tempor arcu fermentum vitae mi massa egestas. 
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -59,45 +56,36 @@
                     <div class="authentication-form mx-auto">
                         <div class="logo-centered">
                             <a href="db-default.html">
-                                <img src="{{ url('assets/img/logo.png') }}" alt="logo">
+                                <img src="{{ url('assets/img/netkesif-logo.jpg') }}" alt="logo">
                             </a>
                         </div>
-                        <h3>Sign In To Elisyam</h3>
-                        <form>
+                        
+                        <form action="{{ url('login')}}" method="post" enctype="multipart/form-data">
                             <div class="group material-input">
-							    <input type="text" required>
+							    <input type="text" required name="email">
 							    <span class="highlight"></span>
 							    <span class="bar"></span>
-							    <label>Email</label>
+							    <label>Mail Adresi</label>
                             </div>
                             <div class="group material-input">
-							    <input type="password" required>
+							    <input type="password" required name="password">
 							    <span class="highlight"></span>
 							    <span class="bar"></span>
-							    <label>Password</label>
+							    <label>Şifre</label>
                             </div>
-                        </form>
-                        <div class="row">
-                            <div class="col text-left">
-                                <div class="styled-checkbox">
-                                    <input type="checkbox" name="checkbox" id="remeber">
-                                    <label for="remeber">Remember me</label>
+                            <div class="row">
+                                <div class="col text-right">
+                                    <a href="{{ url('password/reset') }}">Kullanıcı bilgilerimi hatırlamıyorum</a>
                                 </div>
                             </div>
-                            <div class="col text-right">
-                                <a href="pages-forgot-password.html">Forgot Password ?</a>
+                            <div class="sign-btn text-center">
+                                <button class="btn btn-lg btn-gradient-01">
+                                    Giriş
+                                </button>
                             </div>
-                        </div>
-                        <div class="sign-btn text-center">
-                            <a href="db-default.html" class="btn btn-lg btn-gradient-01">
-                                Sign in
-                            </a>
-                        </div>
-                        <div class="register">
-                            Don't have an account? 
-                            <br>
-                            <a href="pages-register.html">Create an account</a>
-                        </div>
+                            {{ csrf_field() }}
+                        </form>
+                        
                     </div>
                     <!-- End Form -->                        
                 </div>

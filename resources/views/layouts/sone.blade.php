@@ -22,7 +22,7 @@
         <!-- Stylesheet -->
         <link rel="stylesheet" href="{{ url('assets/vendors/css/base/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url('assets/vendors/css/base/elisyam-1.5.min.css') }}">
-        <link rel="stylesheet" href="{{ url('assets/css/animate/animate.min.css') }}">
+        @yield('pagecss')
         <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -31,14 +31,14 @@
         <!-- Begin Preloader -->
         <div id="preloader">
             <div class="canvas">
-                <img src="{{ url('assets/img/logo.png') }}" alt="logo" class="loader-logo">
+                <img src="{{ url('assets/img/netkesif-logo.jpg') }}" alt="logo" class="loader-logo">
                 <div class="spinner"></div>   
             </div>
         </div>
         <!-- End Preloader -->
         <div class="page db-modern">
             <!-- Begin Header -->
-            @include('partials.header')
+            {{-- @include('partials.header') --}}
             <!-- End Header -->
             <!-- Begin Page Content -->
             <div class="page-content">
@@ -46,6 +46,20 @@
                 @include('partials.horizontalmenu')
                 <!-- End Navigation -->
                 <div class="content-inner boxed mt-4 w-100">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if(count($errors)>0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="container-fluid">
                         @yield('content')
                     </div>
@@ -64,13 +78,15 @@
         <!-- End Vendor Js -->
         <!-- Begin Page Vendor Js -->
         <script src="{{ url('assets/vendors/js/nicescroll/nicescroll.min.js') }}"></script>
-        <script src="{{ url('assets/vendors/js/waypoints/waypoints.min.js') }}"></script>
-        <script src="{{ url('assets/vendors/js/chart/chart.min.js') }}"></script>
-        <script src="{{ url('assets/vendors/js/progress/circle-progress.min.js') }}"></script>
+        @yield('pagejs')
+        {{-- <script src="{{ url('assets/vendors/js/waypoints/waypoints.min.js') }}"></script>
+        <script src="{{ url('assets/vendors/js/chart/chart.min.js') }}"></script>""
+        <script src="{{ url('assets/vendors/js/progress/circle-progress.min.js') }}"></script> --}}
         <script src="{{ url('assets/vendors/js/app/app.min.js') }}"></script>
         <!-- End Page Vendor Js -->
         <!-- Begin Page Snippets -->
-        <script src="{{ url('assets/js/dashboard/db-modern.min.js') }}"></script>
+        @yield('pagecustomjs')
+        {{-- <script src="{{ url('assets/js/dashboard/db-modern.min.js') }}"></script> --}}
         <!-- End Page Snippets -->
     </body>
 </html>
