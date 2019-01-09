@@ -10,10 +10,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         @if(auth()->user()->is_admin==1)
-                        <li><a href="{{ url('admin/users') }}"><span>Kullanıcılar</span></a></li>
-                        <li><a href="{{ url('admin') }}"><span>Şirketler</span></a></li>
+                            <li><a href="{{ url('admin/users') }}"><span>Kullanıcılar</span></a></li>
+                            <li><a href="{{ url('admin') }}"><span>Şirketler</span></a></li>
                         @else
-                        <li><a href="{{ url('logout') }}"><span>Çıkış</span></a></li>
+                            <li><a href="{{ url('parameters') }}"><span>Parametreler</span></a></li>
                         @endif
                         <li><a href="{{ url('logout') }}"><span>Çıkış</span></a></li>
                     </ul>

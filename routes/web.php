@@ -23,3 +23,8 @@ Route::get('admin/delete/{firmid}', 'Admin\FirmsController@delete');
 Route::get('admin/users', 'Admin\UsersController@index');
 Route::post('admin/users', 'Admin\UsersController@save');
 Route::get('admin/delete/{firmid}', 'Admin\FirmsController@delete');
+Route::get('error', 'HomeController@notActive');
+Route::get('dashboard', 'HomeController@dashboard');
+Route::get('parameters', 'ParameterController@index');
+Route::post('parameters', 'ParameterController@save');
+Route::post('parameter/save', 'ParameterController@saveTable');

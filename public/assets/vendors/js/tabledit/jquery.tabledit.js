@@ -1133,9 +1133,9 @@ if (typeof jQuery === 'undefined') {
       btn_edit: 'Edit',
       btn_delete: 'Delete',
       btn_confirm: 'Confirm',
-      btn_save: 'Save',
+      btn_save: 'Kayde',
       btn_restore: 'Restore',
-      txt_action: 'Actions',
+      txt_action: 'İşlemler',
       txt_nolimit: 'Count of characters without limit',
       txt_allowchar: 'Allowed count of characters %s',
       txt_remain: 'characters remaining'

@@ -59,7 +59,17 @@
                                 <img src="{{ url('assets/img/netkesif-logo.jpg') }}" alt="logo">
                             </a>
                         </div>
-                        
+                        <p>
+                            @if(count($errors)>0)
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        </p>
                         <form action="{{ url('login')}}" method="post" enctype="multipart/form-data">
                             <div class="group material-input">
 							    <input type="text" required name="email">

@@ -9,6 +9,7 @@ use App\Firm;
 use App\SafeAccount;
 use App\Authority;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class UsersController extends Controller
 {

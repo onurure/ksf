@@ -39,10 +39,12 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        if (auth()->user()->is_admin==1){
+        if(auth()->user()->is_admin==1){
             return 'admin';
-        }else{
+        }else if(auth()->user()->status==1){
             return 'dashboard';
+        }else{
+            return 'error';
         }
     }
 }
