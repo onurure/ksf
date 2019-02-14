@@ -41,6 +41,16 @@ class UsersController extends Controller
     }
     public function save(Request $request)
     {
+        $this->validate($request,[
+            'name' =>  'required',
+            'lastname' =>  'required',
+            'username' =>  'required',
+            'netkesif_email' =>  'required|email',
+            'tcno'   =>  'required|integer',
+            'phone'   =>  'required|integer',
+            'email' => 'required|email',
+            'photo' => 'image'
+        ]);
         $data = $request->only(['name', 'lastname', 'username', 'tcno', 'phone', 'netkesif_email', 'email', 'status']);
         if($request->file('photo')){
             $file = $request->file('photo');

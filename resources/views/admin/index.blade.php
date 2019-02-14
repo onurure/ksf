@@ -28,7 +28,7 @@
                 <div class="table-responsive">
                     <table id="firmalar" class="table table-bordered mb-0">
                         <thead>
-                            <tr><th>ADI</th><th>VERGİ DAİRESİ</th><th>VERGİ NO</th><th>TELEFONU</th><th></th></tr>
+                            <tr><th>LOGO</th><th>ADI</th><th>VERGİ DAİRESİ</th><th>VERGİ NO</th><th>TELEFONU</th><th>ADRES</th><th></th></tr>
                         </thead>
                         <tbody>
                             @if(isset($firms))
@@ -39,10 +39,12 @@
                                         @endphp
                                     @endif
                                     <tr class="{{ request()->firm == $firm->id ? 'selected' : ''}}">
+                                        <td><img src="{{ url($firm->logo)}}" width="100"></td>
                                         <td>{{ $firm->name}}</td>
                                         <td>{{ $firm->tax}}</td>
                                         <td>{{ $firm->taxno}}</td>
                                         <td>{{ $firm->telephone}}</td>
+                                        <td>{{ $firm->address}}</td>
                                         <td class="td-actions">
                                             <a href="{{url('admin')}}?firm={{$firm->id}}"><i class="la la-edit edit"></i></a>
                                             <a href="{{url('admin/delete')}}/{{$firm->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')"><i class="la la-close delete"></i></a>
@@ -70,19 +72,19 @@
                             <div class="form-group row d-flex align-items-center mb-5">
                                 <label class="col-lg-3 form-control-label">ADI</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="name" value="{{ isset($selected) ? $selected->name : '' }}">
+                                    <input type="text" class="form-control" required name="name" value="{{ isset($selected) ? $selected->name : '' }}">
                                 </div>
                             </div>
                             <div class="form-group row d-flex align-items-center mb-5">
                                 <label class="col-lg-3 form-control-label">VERGİ DAİRESİ</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="tax" value="{{ isset($selected) ? $selected->tax : '' }}">
+                                    <input type="text" class="form-control" required name="tax" value="{{ isset($selected) ? $selected->tax : '' }}">
                                 </div>
                             </div>
                             <div class="form-group row d-flex align-items-center mb-5">
                                 <label class="col-lg-3 form-control-label">VERGİ NO</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="taxno" value="{{ isset($selected) ? $selected->taxno : '' }}">
+                                    <input type="number" class="form-control" required name="taxno" value="{{ isset($selected) ? $selected->taxno : '' }}">
                                 </div>
                             </div>
                             <div class="form-group row d-flex align-items-center mb-5">
@@ -94,7 +96,7 @@
                             <div class="form-group row d-flex align-items-center mb-5">
                                 <label class="col-lg-3 form-control-label">TELEFON</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="telephone" value="{{ isset($selected) ? $selected->telephone : '' }}">
+                                    <input type="number" class="form-control" required name="telephone" value="{{ isset($selected) ? $selected->telephone : '' }}">
                                 </div>
                             </div>
                             <div class="form-group row d-flex align-items-center mb-5">
@@ -155,7 +157,7 @@
                                 @foreach($partners as $partner)
                                     <tr>
                                         <td><input type="hidden" name="partners[]" value="{{$partner->id}}" class="oran"><span class="text-primary">{{$partner->name}}</span></td>
-                                        <td class="oran"><input type="integer" class="form-control" name="percentage[]" value="{{$partner->percentage}}"></td>
+                                        <td class="oran"><input type="number" class="form-control" name="percentage[]" value="{{$partner->percentage}}"></td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -198,13 +200,13 @@
             });
             $('#tumunuSec').click(function(){
                 $("#kullanicilar>tbody>tr").each(function() {
-                    var yenitr = '<tr>'+$(this).html()+'<td class="oran"><input type="hidden" value="'+$(this).data('uid')+'" name="partners[]"><input type="integer" name="percentage[]" class="form-control" value=""></td></tr>';
+                    var yenitr = '<tr>'+$(this).html()+'<td class="oran"><input type="hidden" value="'+$(this).data('uid')+'" name="partners[]"><input type="number" name="percentage[]" class="form-control" value=""></td></tr>';
                     $("#ortaklar > tbody").append(yenitr);
                     $(this).remove();
                 });
             });
             $('#secimiSec').click(function(){
-                var yenitr = '<tr>'+$('#kullanicilar tbody tr.selected').html()+'<td class="oran"><input type="hidden" value="'+$('#kullanicilar tbody tr.selected').data('uid')+'" name="partners[]"><input type="integer" name="percentage[]" class="form-control" value=""></td></tr>';
+                var yenitr = '<tr>'+$('#kullanicilar tbody tr.selected').html()+'<td class="oran"><input type="hidden" value="'+$('#kullanicilar tbody tr.selected').data('uid')+'" name="partners[]"><input type="number" name="percentage[]" class="form-control" value=""></td></tr>';
                 $("#ortaklar > tbody").append(yenitr);
                 $('#kullanicilar tbody tr.selected').remove();
                 // var tabloveri = tablo.rows('.selected').data();
@@ -246,20 +248,31 @@
     }
     function percCheck(){
         var toplam = 0;
+        var ortakvarmi = 0;
         $('input[name^=percentage]').each(function() {
             toplam = toplam + parseInt($(this).val());
             console.log($(this));
+            ortakvarmi = 1;
         });
         console.log(toplam);
-        if(toplam != 100){
-            var confirm = window.confirm('Ortakların oranlarının toplamı 100 değil. Yine de kayıt etmek istiyor musunuz?');
+        if(ortakvarmi==0){
+            var confirm = window.confirm('Hiç ortak seçilmedi. Yine de kayıt etmek istiyor musunuz?');
             if (confirm) {
                 $("#firmaForm").submit();
             } else {
                 return false;
             }
         }else{
-            $("#firmaForm").submit();
+            if(toplam != 100){
+                var confirm = window.confirm('Ortakların oranlarının toplamı 100 değil. Yine de kayıt etmek istiyor musunuz?');
+                if (confirm) {
+                    $("#firmaForm").submit();
+                } else {
+                    return false;
+                }
+            }else{
+                $("#firmaForm").submit();
+            }
         }
     }
 </script>

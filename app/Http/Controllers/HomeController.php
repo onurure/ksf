@@ -37,6 +37,11 @@ class HomeController extends Controller
         Auth::logout();
         return redirect('/')->withErrors(['Sisteme giriş izniniz yok. Lütfen yöneticiniz ile görüşün.']);
     }
+    public function failure()
+    {
+        Auth::logout();
+        return redirect('/')->withErrors(['Kullanıcı bulunamadı.']);
+    }
     public function dashboard()
     {
         return view('dashboard.dashboard');

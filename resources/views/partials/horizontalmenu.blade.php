@@ -13,6 +13,8 @@
                             <li><a href="{{ url('admin/users') }}"><span>Kullanıcılar</span></a></li>
                             <li><a href="{{ url('admin') }}"><span>Şirketler</span></a></li>
                         @else
+                            <li><a href="{{ url('safeaccount') }}"><span>Kasa Yönetimi</span></a></li>
+                            <li><a href="{{ url('incoming') }}"><span>Gelir Yönetimi</span></a></li>
                             <li><a href="{{ url('parameters') }}"><span>Parametreler</span></a></li>
                         @endif
                         <li><a href="{{ url('logout') }}"><span>Çıkış</span></a></li>

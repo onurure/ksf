@@ -46,7 +46,7 @@
                                         <td>{{ $user->phone}}</td>
                                         <td>{{ $user->netkesif_email}}</td>
                                         <td>{{ $user->email}}</td>
-                                        <td>{{ $user->status}}</td>
+                                        <td>{{ $user->status == 1 ? 'Aktif' : 'Pasif' }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -88,13 +88,13 @@
                             <div class="form-group row d-flex align-items-center mb-5">
                                 <label class="col-lg-3 form-control-label">TC NO</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="tcno" value="{{ isset($selected) ? $selected->tcno : '' }}">
+                                    <input type="number" class="form-control" name="tcno" value="{{ isset($selected) ? $selected->tcno : '' }}">
                                 </div>
                             </div>
                             <div class="form-group row d-flex align-items-center mb-5">
                                 <label class="col-lg-3 form-control-label">TELEFON</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="phone" value="{{ isset($selected) ? $selected->phone : '' }}">
+                                    <input type="number" class="form-control" name="phone" value="{{ isset($selected) ? $selected->phone : '' }}">
                                 </div>
                             </div>
                         </div>
@@ -247,7 +247,7 @@
     <button type="submit" class="btn btn-primary btn-block btn-square">Kaydet</button>                 
 </form>
 @endsection
-@section('pagejs')  
+@section('pagejs')
     <script src="{{ url('assets/vendors/js/datatables/datatables.min.js') }}"></script>
     <script src="{{ url('assets/vendors/js/datatables/dataTables.buttons.min.js') }}"></script>
     <script src="{{ url('assets/vendors/js/datatables/jszip.min.js') }}"></script>
@@ -260,8 +260,25 @@
 <script>
     (function ($) {
         'use strict';
-        $(function () {
+        $(function(){
             $("#kasalar > tbody > tr").addClass('hide');
+            @if(isset($yfirms))
+                $('#yfirmalar tbody tr:first-child').toggleClass('selected');
+                $('#kasalar').removeClass('hide');
+                $('.f'+$('#yfirmalar tbody tr:first-child').data('fid')).removeClass('hide');
+                $(".fclass").addClass('hide');
+                if($('#fid'+$('#yfirmalar tbody tr:first-child').data('fid')).val()){
+                    console.log("aaa"+$('#fid'+$('#yfirmalar tbody tr:first-child').data('fid')).val());
+                    if($('#fid'+$('#yfirmalar tbody tr:first-child').data('fid')).val()==2){
+
+                    }
+                    yetkiSinifi($('#fid'+$('#yfirmalar tbody tr:first-child').data('fid')).val(), $('#yfirmalar tbody tr:first-child').data('fid'));
+                    $(".fid"+$('#yfirmalar tbody tr:first-child').data('fid')).removeClass('hide');
+                }else{
+                    var yetkis = '<tr onclick="yetkiSinifi(1,'+$('#yfirmalar tbody tr:first-child').data('fid')+')" class="fclass fid'+$('#yfirmalar tbody tr:first-child').data('fid')+' fy1"><td><input type="hidden" value="0" name="fid'+$('#yfirmalar tbody tr:first-child').data('fid')+'" id="fid'+$('#yfirmalar tbody tr:first-child').data('fid')+'"><span class="text-primary">TAM YETKİ</span></td></tr><tr onclick="yetkiSinifi(2,'+$('#yfirmalar tbody tr:first-child').data('fid')+')" class="fclass fid'+$('#yfirmalar tbody tr:first-child').data('fid')+' fy2"><td><span class="text-primary">KISMI YETKİ</span></td></tr>';
+                    $('#yetkisinifi').append(yetkis);
+                }
+            @endif
             $('#firmalar tbody').on('click', 'tr', function (){
                 $('#firmalar tbody tr').removeClass('selected');
                 $(this).toggleClass('selected');
@@ -364,6 +381,7 @@
         }
     }
     function yetkiSinifi(type, fid){
+        console.log(type,fid);
         $(".fy1").removeClass('selected');
         $(".fy2").removeClass('selected');
         if(type==1){

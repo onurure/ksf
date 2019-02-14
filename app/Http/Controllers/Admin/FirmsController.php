@@ -44,6 +44,14 @@ class FirmsController extends Controller
     }
     public function save(Request $request)
     {
+        $this->validate($request,[
+            'name' =>  'required',
+            'tax' =>  'required',
+            'taxno'   =>  'required|integer',
+            'telephone'   =>  'required|integer',
+            'address' => 'required',
+            'logo' => 'image'
+        ]);
         $firmvalues = $request->only(['name', 'tax', 'taxno', 'address', 'telephone']);
         if($request->file('logo')){
             $file = $request->file('logo');
