@@ -37,6 +37,13 @@ class SafeDataController extends Controller
             $safedata->approve = 0;
         }
         if($safedata->save()){
+            $total = $safedata->safe_account->total;
+            if($request->giren!=''){
+                $safedata->safe_account->total = $total + $request->giren;
+            }else{
+                $safedata->safe_account->total = $total - $request->cikan;
+            }
+            $safedata->safe_account->save();
             if($safedata->main_class_id==1){
                 $incomingdata = new Incoming();
                 $incomingdata->firm_id = $safedata->safe_account->firm->id;

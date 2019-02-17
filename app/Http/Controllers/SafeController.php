@@ -204,6 +204,7 @@ class SafeController extends Controller
             $kasa = new SafeAccount();
             $kasa->name = $request->safe_name;
             $kasa->firm_id = $request->firm;
+            $kasa->total = 0;
             if($kasa->save()){
                 return redirect()->back()->with('success', 'Kasa oluşturuldu.');
             }else{

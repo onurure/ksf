@@ -127,12 +127,13 @@
                         <div class="table-responsive tableheight visible-scroll">
                             <table id="kasalar" class="table table-bordered mb-0">
                                 <thead>
-                                    <tr><th>KASA ADI</th><th width="200"></th></tr>
+                                    <tr><th>KASA ADI</th><th>BAKİYE</th><th width="200"></th></tr>
                                 </thead>
                                 <tbody>
                                     @foreach($firmselect->safe_accounts as $safe)
                                         <tr onclick="safeSelect({{$safe->id}}, this)" class="{{ request()->safe == $safe->id ? 'selected' : ''}}">
                                             <td class="editableTD" data-name="safe_name" data-type="text" data-pk="{{$safe->id}}">{{$safe->name}}</td>
+                                            <td>{{$safe->total}}</td>
                                             <td><button class="btn btn-info edit btn-sm"><i class="la la-edit"></i></button> <a href="{{url('safe/delete')}}/{{$safe->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')" class="btn btn-danger btn-sm"><i class="la la-trash delete"></i></a></td></tr>
                                     @endforeach
                                 </tbody>
@@ -238,8 +239,8 @@
                                         <td><input type="text" class="form-control tablearama" name="bankanot"></td>
                                         <td><input type="text" class="form-control tablearama" name="detaynot"></td>
                                         <td><input type="text" class="form-control tablearama" name="proje"></td>
-                                        <td><input type="number" class="form-control tablearama hesap" name="giren"></td>
-                                        <td><input type="number" class="form-control tablearama hesap" name="cikan"></td>
+                                        <td><input type="text" class="form-control tablearama hesap hesapmask" name="giren"></td>
+                                        <td><input type="text" class="form-control tablearama hesap hesapmask" name="cikan"></td>
                                         <td><input type="text" class="form-control tablearama hesapbakiye" readonly></td>
                                         <td>
                                             <select name="kdv" class="form-control hesapla">
@@ -415,6 +416,7 @@
     <script src="{{ url('assets/vendors/js/datepicker/moment.min.js') }}"></script>
     <script src="{{ url('assets/vendors/js/datepicker/daterangepicker.js') }}"></script>
     <script src="{{ url('assets/vendors/dropzone/dropzone.js') }}"></script>
+    <script src="{{ url('assets/vendors/js/mask/jquery.mask.min.js') }}"></script>
 @endsection
 @section('pagecustomjs')
     <script>
@@ -430,6 +432,7 @@
         let a10;
         let a11;
         $(document).ready(function() {
+            $('.hesapmask').mask('000.000.000.000.000', {reverse: true});
             $('.popaciklama').popover();
             $('.editableTD').editable({
                 mode: 'inline',
@@ -494,8 +497,8 @@
         $('.dateara').val('');
         $(".hesap").focusout(function() {
             var kdvsi = $(this).closest('tr').find(".hesapla").val();
-            console.log(kdvsi);
-            var tutar = $(this).val();
+            var tutar = $(this).val().replace(/\./g,'').replace(',','');
+            console.log(tutar);
             if(tutar){
                 var toplam = 0;
                 if(kdvsi==0){
@@ -505,6 +508,7 @@
                     toplam = tutar/(100+parseInt(kdvsi))*100;
                 }
                 $(this).closest('tr').find(".hesapbakiye").val(parseFloat(toplam).toFixed(2));
+                $(".hesapbakiye").mask('000.000.000.000.000,00', {reverse: true});
             }
         });
         $(".hesapla").change(function(){
@@ -512,7 +516,7 @@
             var tutar = 0;
             $(this).closest('tr').find(".hesap").each(function( i, ele ) {
                 if($(ele).val() && $(ele).val()!=0){
-                    tutar = $(ele).val();
+                    tutar = $(ele).val().replace(/\./g,'').replace(',','');
                 }
             });
             var toplam = 0;
