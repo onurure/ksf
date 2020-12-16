@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
             if(Auth::user()->is_admin==1){
                 return redirect('admin');
             }
-            return redirect('home');
+            return redirect('dashboard');
         }
 
         return $next($request);

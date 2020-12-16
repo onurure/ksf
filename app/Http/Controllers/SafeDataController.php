@@ -24,8 +24,8 @@ class SafeDataController extends Controller
         $safedata->banknote = $request->bankanot;
         $safedata->detailnote = $request->detaynot;
         $safedata->project = $request->proje;
-        $safedata->incoming = $request->giren;
-        $safedata->outgoing = $request->cikan;
+        $safedata->incoming = str_replace(array(',','.'),array('',''),$request->giren);
+        $safedata->outgoing = str_replace(array(',','.'),array('',''),$request->cikan);
         $safedata->tax = $request->kdv;
         $safedata->main_class_id = $request->mainclass;
         $safedata->sub_class_id = $request->subclass;
@@ -39,9 +39,9 @@ class SafeDataController extends Controller
         if($safedata->save()){
             $total = $safedata->safe_account->total;
             if($request->giren!=''){
-                $safedata->safe_account->total = $total + $request->giren;
+                $safedata->safe_account->total = $total + str_replace(array(',','.'),array('',''),$request->giren);
             }else{
-                $safedata->safe_account->total = $total - $request->cikan;
+                $safedata->safe_account->total = $total - str_replace(array(',','.'),array('',''),$request->cikan);
             }
             $safedata->safe_account->save();
             if($safedata->main_class_id==1){

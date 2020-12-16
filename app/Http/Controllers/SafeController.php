@@ -23,7 +23,7 @@ class SafeController extends Controller
     {
         $aramami = 0;
         $firms = Firm::all();
-        $safeaccounts = SafeAccount::where('firm_id', $request->firmid)->pluck('name', 'id');
+        $safeaccounts = SafeAccount::where('firm_id', $request->firm)->pluck('name', 'id');
         $mainclasses = MainClass::all();
         $privateperiods = PrivatePeriod::all();
         $monthperiods = MonthPeriod::all();
@@ -101,7 +101,7 @@ class SafeController extends Controller
                     $aramami = 1;
                 }
             }
-            $safeselect = $safeselect->orderBy('data_date')->get();
+            $safeselect = $safeselect->skip(0)->take(50)->orderBy('data_date')->get();
             $hatalitoplam = 0;
             foreach($safeselect as $s){
                 if($s->main_class_id=="8"){
@@ -191,7 +191,7 @@ class SafeController extends Controller
                     }
                 }
             }
-            $safeselect = $safeselect->get();
+            $safeselect = $safeselect->skip(0)->take(50)->orderBy('data_date')->get();
         }else{
             $hatalitoplam = 0;
             $safeselect = '';

@@ -21,6 +21,8 @@
                                         @else
                                             <li><a href="{{ url('safeaccount') }}"><span>Kasa Yönetimi</span></a></li>
                                             <li><a href="{{ url('incoming') }}"><span>Gelir Yönetimi</span></a></li>
+                                            <li><a href="{{ url('expense') }}"><span>Borç Yönetimi</span></a></li>
+                                            <li><a href="{{ url('report') }}"><span>Raporlar</span></a></li>
                                             <li><a href="{{ url('parameters') }}"><span>Parametreler</span></a></li>
                                         @endif
                                     </ul>
@@ -35,7 +37,7 @@
                     <!-- User -->
                     <li class="nav-item dropdown">
                         <a id="user" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
-                            <img src="{{auth()->user()->photo}}" onerror="this.src='images/default.png'" class="avatar rounded-circle" style="margin-right:10px;">
+                            <img src="{{auth()->user()->photo}}" onerror="this.src='{{url('images/default.png')}}'" class="avatar rounded-circle" style="margin-right:10px;">
                         </a>
                         <ul aria-labelledby="user" class="user-size dropdown-menu">
                             <li>

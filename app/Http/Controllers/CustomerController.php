@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\Incoming;
+use App\SafeData;
 
 class CustomerController extends Controller
 {
@@ -15,6 +16,9 @@ class CustomerController extends Controller
     public function delete($id)
     {
         $count = Incoming::where('customer_id', $id)->count();
+        if($count<1){
+            $count = SafeData::where('main_class_id', 1)->where('sub_class_id', $id)->count();
+        }
         if($count){
             return redirect()->back()->withErrors(['Verisi olan müşteri silinemez.']);
         }else{

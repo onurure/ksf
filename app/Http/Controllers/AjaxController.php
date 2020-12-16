@@ -41,4 +41,33 @@ class AjaxController extends Controller
         }
         return response()->json($datas);
     }
+
+    public function mainClasses(Request $request)
+    {
+        $mainclassid = $request->mainclassids;
+        if(in_array(1, $mainclassid)){
+            $datas[1] = Customer::all()->pluck('name', 'id');
+        }
+        if(in_array(2, $mainclassid)){
+            $datas[2] = Expense::all()->pluck('name', 'id');
+        }
+        if(in_array(3, $mainclassid) || in_array(4, $mainclassid) || in_array(5, $mainclassid)){
+            $data = User::where('status',1)->where('is_admin',0)->select('id', 'name', 'lastname')->get();
+            foreach($data as $d){
+                $name = $d->name.' '.$d->lastname;
+                $datas[3][$d->id] = $name;
+            }
+        }
+        if(in_array(6, $mainclassid)){
+            $data = Firm::find($request->firmid)->users()->select('users.id', 'name', 'lastname')->get();
+            foreach($data as $d){
+                $name = $d->name.' '.$d->lastname;
+                $datas[6][$d->id] = $name;
+            }
+        }
+        if(in_array(7, $mainclassid)){
+            $datas[7] = SafeAccount::where('firm_id', $firmid)->pluck('name', 'id');
+        }
+        return response()->json($datas);
+    }
 }

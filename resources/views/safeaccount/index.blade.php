@@ -133,8 +133,9 @@
                                     @foreach($firmselect->safe_accounts as $safe)
                                         <tr onclick="safeSelect({{$safe->id}}, this)" class="{{ request()->safe == $safe->id ? 'selected' : ''}}">
                                             <td class="editableTD" data-name="safe_name" data-type="text" data-pk="{{$safe->id}}">{{$safe->name}}</td>
-                                            <td>{{$safe->total}}</td>
-                                            <td><button class="btn btn-info edit btn-sm"><i class="la la-edit"></i></button> <a href="{{url('safe/delete')}}/{{$safe->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')" class="btn btn-danger btn-sm"><i class="la la-trash delete"></i></a></td></tr>
+                                            <td>{{ number_format($safe->total/100, 2, ',', '.') }}</td>
+                                            <td><button class="btn btn-info edit btn-sm"><i class="la la-edit"></i></button> <a href="{{url('safe/delete')}}/{{$safe->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')" class="btn btn-danger btn-sm"><i class="la la-trash delete"></i></a></td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -300,9 +301,9 @@
                                             <td title="Banka Açıklama" data-trigger="hover" data-content="{{$ss->banknote}}" class="popoverli popaciklama"><input type="text" class="form-control tablearama" disabled name="bankanot" value="{{$ss->banknote}}"></td>
                                             <td title="Detay Açıklama" data-trigger="hover" data-content="{{$ss->detailnote}}" class="popoverli popaciklama"><input type="text" class="form-control tablearama" disabled name="detaynot" value="{{$ss->detailnote}}"></td>
                                             <td title="Proje" data-trigger="hover" data-content="{{$ss->project}}" class="popoverli popaciklama"><input type="text" class="form-control tablearama" disabled name="proje" value="{{$ss->project}}"></td>
-                                            <td><input type="number" class="form-control tablearama hesap" disabled name="giren" value="{{$ss->incoming}}"></td>
-                                            <td><input type="number" class="form-control tablearama hesap" disabled name="cikan" value="{{$ss->outgoing}}"></td>
-                                            <td><input type="number" class="form-control tablearama hesapbakiye" value="{{$ss->incoming!=0||$ss->incoming!='' ? number_format($ss->incoming/(100+$ss->tax)*100,2,'.','') : number_format($ss->outgoing/(100+$ss->tax)*100,2,'.','')}}" disabled readonly></td>
+                                            <td><input type="text" class="form-control tablearama hesap" disabled name="giren" value="{{ $ss->incoming>0 ? number_format($ss->incoming/100, 2, ",", ".") : '' }}"></td>
+                                            <td><input type="text" class="form-control tablearama hesap" disabled name="cikan" value="{{ $ss->outgoing>0 ? number_format($ss->outgoing/100, 2, ",", ".") : '' }}"></td>
+                                            <td><input type="text" class="form-control tablearama hesapbakiye" value="{{$ss->incoming!=0||$ss->incoming!='' ? number_format($ss->incoming/(100+$ss->tax),2,',','.') : number_format($ss->outgoing/(100+$ss->tax),2,',','.')}}" disabled readonly></td>
                                             <td>
                                                 <select name="kdv" class="form-control hesapla" disabled>
                                                     <option value="0" {{$ss->tax==0 ? 'selected' : ''}}>% 0</option>
@@ -417,6 +418,7 @@
     <script src="{{ url('assets/vendors/js/datepicker/daterangepicker.js') }}"></script>
     <script src="{{ url('assets/vendors/dropzone/dropzone.js') }}"></script>
     <script src="{{ url('assets/vendors/js/mask/jquery.mask.min.js') }}"></script>
+    <script src="{{ url('assets/vendors/js/mask/account.js') }}"></script>
 @endsection
 @section('pagecustomjs')
     <script>
@@ -432,7 +434,8 @@
         let a10;
         let a11;
         $(document).ready(function() {
-            $('.hesapmask').mask('000.000.000.000.000', {reverse: true});
+            $('.hesapmask').mask('000.000.000.000.000,00', {reverse: true});
+            $(".hesapbakiye").mask('000.000.000.000.000,00', {reverse: true});
             $('.popaciklama').popover();
             $('.editableTD').editable({
                 mode: 'inline',
@@ -507,8 +510,9 @@
                 }else{
                     toplam = tutar/(100+parseInt(kdvsi))*100;
                 }
-                $(this).closest('tr').find(".hesapbakiye").val(parseFloat(toplam).toFixed(2));
-                $(".hesapbakiye").mask('000.000.000.000.000,00', {reverse: true});
+                toplam = toplam/100;
+                // $(this).closest('tr').find(".hesapbakiye").val(parseFloat(toplam).toFixed(2));
+                $(this).closest('tr').find(".hesapbakiye").val(accounting.formatMoney(toplam, "", 2, ".", ","));
             }
         });
         $(".hesapla").change(function(){
@@ -526,7 +530,10 @@
             }else{
                 toplam = tutar/(100+parseInt(kdvsi))*100;
             }
-            $(this).closest('tr').find(".hesapbakiye").val(toplam.toFixed(2));
+            toplam = toplam/100;
+            // $(".hesapbakiye").mask('000.000.000.000.000,00', {reverse: true});
+            console.log(accounting.formatMoney(toplam, "", 2, ".", ","));
+            $(this).closest('tr').find(".hesapbakiye").val(accounting.formatMoney(toplam, "", 2, ".", ","));
         });
         $(".popoverselect").each(function(){
             var a = $(this).find('option:selected').text();

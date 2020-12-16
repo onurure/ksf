@@ -8,6 +8,8 @@ use App\Expense;
 use App\PrivatePeriod;
 use App\MainClass;
 use App\MonthPeriod;
+use App\SafeData;
+use App\Incoming;
 
 class ParameterController extends Controller
 {
@@ -84,5 +86,36 @@ class ParameterController extends Controller
             $parametre->y_name = $request->value;
         }
         $parametre->save();
+    }
+
+    public function delete($type, $id)
+    {
+        if($type == 'monthperiod'){
+            $count = Incoming::where('month_period_id', $id)->count();
+            if($count<1){
+                $count = SafeData::where('month_period_id', $id)->count();
+            }
+            $param = MonthPeriod::find($id);
+        }else if($type == 'privateperiod'){
+            $count = Incoming::where('private_period_id', $id)->count();
+            if($count<1){
+                $count = SafeData::where('private_period_id', $id)->count();
+            }
+            $param = PrivatePeriod::find($id);
+        }else if($type == 'expense'){
+            $count = SafeData::where('main_class_id',2)->where('sub_class_id', $id)->count();
+            if($count<1){
+            }
+            $param = Expense::find($id);
+        }
+        if($count){
+            return redirect()->back()->withErrors(['Silmek istenen bilginin verisi bulunduğu için silinemez.']);
+        }else{
+            if($param->delete()){
+                return redirect()->back()->with('success', 'Silme işlemi başarılı.');
+            }else{
+                return redirect()->back()->withErrors(['Hata oluştu. Silme gerçekleşmedi.']);
+            }
+        }
     }
 }

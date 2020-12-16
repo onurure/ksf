@@ -33,7 +33,7 @@
                         <table class="tableedit table mb-0">
                             <thead>
                                 <tr>
-                                    <th>Müşteriler</th>
+                                    <th colspan="2">Müşteriler</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,6 +41,7 @@
                                     @foreach($customers as $customer)
                                         <tr>
                                             <td class="editableTD" data-name="customer" data-type="text" data-pk="{{$customer->id}}">{{$customer->name}}</td>
+                                            <td><a href="{{url('customer/delete')}}/{{$customer->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')" class="btn btn-danger btn-sm"><i class="la la-trash delete"></i></a></td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -70,7 +71,7 @@
                         <table class="tableedit table mb-0">
                             <thead>
                                 <tr>
-                                    <th>Giderler</th>
+                                    <th colspan="2">Giderler</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,6 +79,7 @@
                                     @foreach($expenses as $expense)
                                         <tr>
                                             <td class="editableTD" data-name="expense" data-type="text" data-pk="{{$expense->id}}">{{$expense->name}}</td>
+                                            <td><a href="{{url('param/delete/expense')}}/{{$expense->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')" class="btn btn-danger btn-sm"><i class="la la-trash delete"></i></a></td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -107,14 +109,15 @@
                         <table class="tableedit table mb-0">
                             <thead>
                                 <tr>
-                                    <th>Özel Dönem</th>
+                                    <th colspan="2">Özel Dönem</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if(isset($privateperiods))
-                                    @foreach($privateperiods as $privateperiods)
+                                    @foreach($privateperiods as $privateperiod)
                                         <tr>
-                                            <td class="editableTD" data-name="private_peroid" data-type="text" data-pk="{{$privateperiods->id}}">{{$privateperiods->name}}</td>
+                                            <td class="editableTD" data-name="private_peroid" data-type="text" data-pk="{{$privateperiod->id}}">{{$privateperiod->name}}</td>
+                                            <td><a href="{{url('param/delete/privateperiod')}}/{{$privateperiod->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')" class="btn btn-danger btn-sm"><i class="la la-trash delete"></i></a></td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -183,6 +186,7 @@
                                 <tr>
                                     <th>Ay</th>
                                     <th>Yıl</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -191,6 +195,7 @@
                                         <tr>
                                             <td class="editableTD" data-name="m_name" data-type="text" data-pk="{{$monthperiod->id}}">{{$monthperiod->m_name}}</td>
                                             <td class="editableTD" data-name="y_name" data-type="text" data-pk="{{$monthperiod->id}}">{{$monthperiod->y_name}}</td>
+                                            <td><a href="{{url('param/delete/monthperiod')}}/{{$monthperiod->id}}" onclick="return confirm('Silme işlemi geri alnımaz. Yine de silmek istiyor musunuz?')" class="btn btn-danger btn-sm"><i class="la la-trash delete"></i></a></td>
                                         </tr>
                                     @endforeach
                                 @endif

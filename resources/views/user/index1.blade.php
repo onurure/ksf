@@ -219,131 +219,121 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="row flex-row">
-        <div class="col-xl-12">
+        <div class="col-xl-3">
             <div class="widget has-shadow">
-                <div class="widget-header bordered no-actions d-flex align-items-center">
-                    <h4>YETKİ İŞLEMLERİ</h4>
-                </div>
                 <div class="widget-body">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <h5>Firmalar</h5>
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                @if(isset($firms))
-                                    @foreach($firms as $firm)
-                                        <li class="nav-item">
-                                            <a class="nav-link {{ $loop->first ? 'active' : '' }}" data-toggle="tab" href="#f{{$firm->id}}" role="tab" aria-controls="f{{$firm->id}}">{{$firm->name}}</a>
-                                        </li>
-                                    @endforeach
-                                @endif
-                            </ul>
-                        </div>
-                        <div class="col-xl-9">
-                            <div class="tab-content">
-                                @if(isset($firms))
-                                    @foreach($firms as $firm)
-                                        <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="f{{$firm->id}}" role="tabpanel">
-                                            <div class="row">
-                                                <div class="col-xl-4">Yetki Seviyesi</div>
-                                                <div class="col-xl-4">
-                                                    <div class="styled-radio">
-                                                        <input type="radio" name="fid{{$firm->id}}" value="1" id="rad-1" onclick="tamyetki({{$firm->id}})">
-                                                        <label for="rad-1">Tam Yetki</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-4">
-                                                    <div class="styled-radio">
-                                                        <input type="radio" name="fid{{$firm->id}}" value="2" id="rad-2" onclick="kismiyetki({{$firm->id}})">
-                                                        <label for="rad-2">Kısmı Yetki</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row hide" id="firmaidsi{{$firm->id}}">
-                                                <div class="col-xl-12">
-                                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                                        <div class="panel panel-default">
-                                                            @if(isset($safes))
-                                                                @foreach($safes as $safe)
-                                                                    @if($safe->firm_id==$firm->id)
-                                                                        <div class="panel-heading" role="tab" id="heading{{$safe->id}}">
-                                                                            <h4 class="panel-title">
-                                                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$safe->id}}" aria-expanded="true" aria-controls="collapse{{$safe->id}}">
-                                                                                    {{$safe->name}} 
-                                                                                </a>
-                                                                            </h4>
-                                                                        </div>
-                                                                        <div id="collapse{{$safe->id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{$safe->id}}">
-                                                                            <div class="panel-body">
-                                                                                <div class="row">
-                                                                                    <div class="col-xl-12">
-                                                                                        <table class="table table-bordered mb-0">
-                                                                                            <thead><tr><th>Kasa İşlemleri</th><th>İŞLEM YAPMA YETKİSİ</th></tr></thead>
-                                                                                            <tbody>
-                                                                                                <tr>
-                                                                                                    <td>Kasa görüntüleme yetkisi</td>
-                                                                                                    <td><input type="checkbox" name="gor{{$safe->firm_id}}[]" value="{{$safe->id}}"></td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td>Kasa düzenleme yetkisi</td>
-                                                                                                    <td><input type="checkbox" name="duz{{$safe->firm_id}}[]" value="{{$safe->id}}"></td>
-                                                                                                </tr>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <hr>
-                                                                                <div class="row">
-                                                                                    <div class="col-xl-12">
-                                                                                        <table class="table table-bordered mb-0">
-                                                                                            <thead><tr><th>Özel Dönemler</th><th>İŞLEM YAPMA YETKİSİ</th></tr></thead>
-                                                                                            <tbody>
-                                                                                                @if(isset($privateperiods))
-                                                                                                    @foreach($privateperiods as $privateperiod)
-                                                                                                        <tr>
-                                                                                                            <td><span class="text-primary">{{$privateperiod->name}}</span></td>
-                                                                                                            <td><input type="checkbox" name="private{{$safe->firm_id}}[{{$safe->id}}][]" value="{{$privateperiod->id}}"></td>
-                                                                                                        </tr>
-                                                                                                    @endforeach
-                                                                                                @endif
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <hr>
-                                                                                <div class="row">
-                                                                                    <div class="col-xl-12">
-                                                                                        <table class="table table-bordered mb-0">
-                                                                                            <thead><tr><th>Aylık Dönemler</th><th>İŞLEM YAPMA YETKİSİ</th></tr></thead>
-                                                                                            <tbody>
-                                                                                                @if(isset($monthperiods))
-                                                                                                    @foreach($monthperiods as $monthperiod)
-                                                                                                        <tr>
-                                                                                                            <td><span class="text-primary">{{$monthperiod->m_name}}</span></td>
-                                                                                                            <td><input type="checkbox" name="month{{$safe->firm_id}}[{{$safe->id}}][]" value="{{$monthperiod->id}}"></td>
-                                                                                                        </tr>
-                                                                                                    @endforeach
-                                                                                                @endif
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
+                    <table id="firmalar" class="table table-bordered mb-0">
+                        <thead>
+                            <tr><th>ŞİRKETLER LİSTESİ</th></tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($firms))
+                                @foreach($firms as $firm)
+                                    <tr data-fid="{{$firm->id}}">
+                                        <td><span class="text-primary">{{$firm->name}}</span></td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-primary btn-square mr-1 mb-2" id="tumunuSec">Tümünü Ekle</button>
+                        <button type="button" class="btn btn-success btn-square mr-1 mb-2" id="secimiSec">Seçimi Ekle</button>
                     </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="widget has-shadow">
+                <div class="widget-body">
+                    <table id="yfirmalar" class="table table-bordered mb-0">
+                        <thead><tr><th>YETKİ OLAN ŞİRKETLER</th></tr></thead>
+                        <tbody>
+                            @if(isset($yfirms))
+                                @foreach($yfirms as $yfirm)
+                                    @php
+                                        $selectedfirms[] = $yfirm->id
+                                    @endphp
+                                    <tr data-fid="{{$yfirm->id}}">
+                                        <td><input type="hidden" name="yfirms[]" value="{{$yfirm->id}}" id="ys{{$yfirm->id}}"><span class="text-primary">{{$yfirm->name}}</span></td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success btn-square mr-1 mb-2" id="secimiKaldir">Seçimi Kaldır</button>
+                        <button type="button" class="btn btn-primary btn-square mr-1 mb-2" id="tumunuKaldir">Tümünü Kaldır</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2">
+            <div class="widget has-shadow">
+                <div class="widget-body">
+                    <table id="yetkisinifi" class="table table-bordered mb-0">
+                        <thead><tr><th>YETKİ SINIFI</th></tr></thead>
+                        <tbody>
+                            @if(isset($yfirms))
+                                @foreach ($yfirms as $yfirm)
+                                    <tr onclick="yetkiSinifi(1, {{$yfirm->id}})" class="fclass fid{{$yfirm->id}} fy1 hide {{ $yfirm->authority_type==1 ? 'selected' : ''}}">
+                                        <td><input type="hidden" value="{{$yfirm->authority_type}}" name="fid{{$yfirm->id}}" id="fid{{$yfirm->id}}"><span class="text-primary">TAM YETKİ</span></td>
+                                    </tr>
+                                    <tr onclick="yetkiSinifi(2,{{$yfirm->id}})" class="fclass fid{{$yfirm->id}} fy2 hide {{ $yfirm->authority_type==2 ? 'selected' : ''}}">
+                                        <td><span class="text-primary">KISMI YETKİ</span></td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="widget has-shadow">
+                <div class="widget-body">
+                    <table id="kasalar" class="table table-bordered mb-0">
+                        <thead><tr><th>KASALAR</th><th>GÖR.</th><th>DÜZ.</th></tr></thead>
+                        <tbody>
+                            @if(isset($safes))
+                                @foreach($safes as $safe)
+                                    @if(isset($yfirms) && in_array($safe->firm_id,$selectedfirms))
+                                        <tr class="fs{{$safe->firm_id}}">
+                                            <td><span class="text-primary">{{$safe->name}}</span></td>
+                                            <td><input type="checkbox" name="gor{{$safe->firm_id}}[]" value="{{$safe->id}}" {{in_array($safe->id,explode(',',$yfirm->account_authority)) ? 'checked' : ''}}></td>
+                                            <td><input type="checkbox" name="duz{{$safe->firm_id}}[]" value="{{$safe->id}}" {{in_array($safe->id,explode(',',$yfirm->account_authority_edit)) ? 'checked' : ''}}></td>
+                                        </tr>
+                                    @else
+                                        <tr class="fs{{$safe->firm_id}}">
+                                            <td><span class="text-primary">{{$safe->name}}</span></td>
+                                            <td><input type="checkbox" name="gor{{$safe->firm_id}}[]" value="{{$safe->id}}"></td>
+                                            <td><input type="checkbox" name="duz{{$safe->firm_id}}[]" value="{{$safe->id}}"></td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -500,12 +490,6 @@
         }
         $(".fy"+type).addClass('selected');
         $('#fid'+fid).val(type);
-    }
-    function kismiyetki(firmaid){
-        $("#firmaidsi"+firmaid).removeClass('hide');
-    }
-    function tamyetki(firmaid){
-        $("#firmaidsi"+firmaid).addClass('hide');
     }
 </script>
 @endsection

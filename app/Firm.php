@@ -22,4 +22,9 @@ class Firm extends Model
     {
         return $this->hasMany('App\Incoming');
     }
+
+    public function expensedatas()
+    {
+        return $this->hasMany('App\ExpenseData');
+    }
 }
